@@ -1,0 +1,630 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Planner | Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- LOGIN -->
+    <section id="loginScreen" class="auth-screen">
+        <div class="auth-card">
+            <div class="auth-logo">SP</div>
+            <p class="eyebrow">COLLEGE MANAGEMENT SYSTEM</p>
+            <h1>Welcome back</h1>
+            <p class="auth-subtitle">Sign in to manage your college timetable.</p>
+
+            <form id="loginForm">
+                <label>Email address</label>
+                <input type="email" id="loginEmail"
+                       placeholder="admin@example.com" required>
+
+                <label>Password</label>
+                <input type="password" id="loginPassword"
+                       placeholder="Enter password" required>
+
+                <div class="forgot-line">
+                    <a href="#" data-auth="forgotScreen">Forgot password?</a>
+                </div>
+
+                <button class="primary-btn full-btn" type="submit">
+                    Sign in <span>→</span>
+                </button>
+            </form>
+
+            <p id="loginMessage" class="message"></p>
+
+            <div class="auth-footer">
+                Don't have an account?
+                <a href="#" data-auth="signupScreen">Create account</a>
+            </div>
+
+            <div class="demo-note">
+                Demo login: admin@gmail.com / admin123
+            </div>
+        </div>
+    </section>
+
+    <!-- SIGN UP -->
+    <section id="signupScreen" class="auth-screen hidden">
+        <div class="auth-card">
+            <div class="auth-logo">SP</div>
+            <p class="eyebrow">ADMIN REGISTRATION</p>
+            <h1>Create account</h1>
+            <p class="auth-subtitle">Register to access the planner dashboard.</p>
+
+            <form id="signupForm">
+                <label>Full name</label>
+                <input type="text" id="signupName"
+                       placeholder="Your full name" required>
+
+                <label>Email address</label>
+                <input type="email" id="signupEmail"
+                       placeholder="Your email" required>
+
+                <label>Password</label>
+                <input type="password" id="signupPassword"
+                       placeholder="Minimum 6 characters"
+                       minlength="6" required>
+
+                <label>Confirm password</label>
+                <input type="password" id="confirmPassword"
+                       placeholder="Confirm password" required>
+
+                <button class="primary-btn full-btn" type="submit">
+                    Create account →
+                </button>
+            </form>
+
+            <p id="signupMessage" class="message"></p>
+
+            <div class="auth-footer">
+                Already registered?
+                <a href="#" data-auth="loginScreen">Sign in</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORGOT PASSWORD -->
+    <section id="forgotScreen" class="auth-screen hidden">
+        <div class="auth-card">
+            <div class="auth-logo">SP</div>
+            <p class="eyebrow">ACCOUNT RECOVERY</p>
+            <h1>Reset password</h1>
+            <p class="auth-subtitle">Enter your registered email and new password.</p>
+
+            <form id="forgotForm">
+                <label>Email address</label>
+                <input type="email" id="forgotEmail"
+                       placeholder="Registered email" required>
+
+                <label>New password</label>
+                <input type="password" id="newPassword"
+                       placeholder="New password" minlength="6" required>
+
+                <label>Confirm password</label>
+                <input type="password" id="confirmNewPassword"
+                       placeholder="Confirm password" required>
+
+                <button class="primary-btn full-btn" type="submit">
+                    Update password →
+                </button>
+            </form>
+
+            <p id="forgotMessage" class="message"></p>
+
+            <div class="auth-footer">
+                <a href="#" data-auth="loginScreen">← Back to sign in</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="dashboard hidden">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">SP</div>
+                <div>
+                    <h2>Schedule<span>Planner</span></h2>
+                    <small>ADMIN WORKSPACE</small>
+                </div>
+            </div>
+
+            <div class="nav-heading">WORKSPACE</div>
+
+            <nav>
+                <a href="#" class="nav-link active" data-page="home">
+                    <span class="nav-icon">▦</span>
+                    Dashboard
+                </a>
+
+                <a href="#" class="nav-link" data-page="upload">
+                    <span class="nav-icon">⇧</span>
+                    Upload CSV Files
+                </a>
+
+                <a href="#" class="nav-link" data-page="generate">
+                    <span class="nav-icon">⚙</span>
+                    Generate Timetable
+                </a>
+
+                <a href="#" class="nav-link" data-page="timetable">
+                    <span class="nav-icon">▤</span>
+                    View Timetable
+                </a>
+
+                <a href="#" class="nav-link" data-page="conflicts">
+                    <span class="nav-icon">⚠</span>
+                    Conflict Report
+                </a>
+            </nav>
+
+            <div class="nav-heading bottom-heading">PREFERENCES</div>
+
+            <nav>
+                <a href="#" class="nav-link" data-page="settings">
+                    <span class="nav-icon">⚙</span>
+                    Settings
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="profile">
+                    <div class="avatar" id="profileInitial">A</div>
+                    <div class="profile-info">
+                        <strong id="sidebarAdminName">Administrator</strong>
+                        <small>Administrator</small>
+                    </div>
+                </div>
+
+                <button class="logout-btn" id="logoutBtn">
+                    ↪ Sign out
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main-content">
+
+            <header class="topbar">
+                <div>
+                    <p class="topbar-label">WORKSPACE / <span id="currentPageName">DASHBOARD</span></p>
+                    <h2 id="pageHeading">Dashboard</h2>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="online-indicator" id="systemStatusBadge">
+                        <span id="systemStatusDot"></span> <span id="systemStatusText">System online</span>
+                    </div>
+                    <div class="top-avatar" id="topAvatar">A</div>
+                </div>
+            </header>
+
+            <!-- HOME -->
+            <section id="home" class="content-page active">
+
+                <div class="hero-card">
+                    <div>
+                        <p class="hero-label">YOUR TIMETABLE WORKSPACE</p>
+                        <h1>Plan smarter.<br>Schedule better.</h1>
+                        <p>Manage your college scheduling data and generate clash-free timetables.</p>
+                        <button class="hero-btn" data-open-page="upload">
+                            Upload your data <span>→</span>
+                        </button>
+                    </div>
+                    <div class="hero-graphic">◷</div>
+                </div>
+
+                <div class="section-title">
+                    <div>
+                        <h2>Overview</h2>
+                        <p>Your current project status</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-top">
+                            <span>Required CSV files</span>
+                            <span class="stat-icon blue">▤</span>
+                        </div>
+                        <h2 id="totalFiles">0/6</h2>
+                        <p>Input files required</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-top">
+                            <span>Uploaded files</span>
+                            <span class="stat-icon green">⇧</span>
+                        </div>
+                        <h2 id="uploadedFiles">0</h2>
+                        <p>Files selected this session</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-top">
+                            <span>Timetable status</span>
+                            <span class="stat-icon orange">◷</span>
+                        </div>
+                        <h2 class="status-text" id="timetableStatus">Pending</h2>
+                        <p>Generation status</p>
+                    </div>
+                </div>
+
+                <div class="section-title">
+                    <div>
+                        <h2>Quick actions</h2>
+                        <p>Continue with your scheduling workflow</p>
+                    </div>
+                </div>
+
+                <div class="quick-grid">
+                    <div class="quick-card">
+                        <div class="quick-icon blue">⇧</div>
+                        <h3>Upload CSV Files</h3>
+                        <p>Import all six input files for timetable generation.</p>
+                        <button class="text-btn" data-open-page="upload">
+                            Open upload page →
+                        </button>
+                    </div>
+
+                    <div class="quick-card">
+                        <div class="quick-icon purple">⚙</div>
+                        <h3>Generate Timetable</h3>
+                        <p>Run the scheduling process after preparing your data.</p>
+                        <button class="text-btn" data-open-page="generate">
+                            Open generator →
+                        </button>
+                    </div>
+
+                    <div class="quick-card">
+                        <div class="quick-icon orange">▤</div>
+                        <h3>View Timetable</h3>
+                        <p>See the generated college timetable.</p>
+                        <button class="text-btn" data-open-page="timetable">
+                            View timetable →
+                        </button>
+                    </div>
+                </div>
+
+                <div class="info-banner">
+                    <div class="info-symbol">i</div>
+                    <div>
+                        <strong>Project architecture</strong>
+                        <p>Frontend: HTML, CSS and JavaScript &nbsp;|&nbsp;
+                           Timetable generator: C++ &nbsp;|&nbsp;
+                           Conflict checker: C</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- UPLOAD -->
+            <section id="upload" class="content-page">
+                <div class="section-title">
+                    <div>
+                        <h2>Upload CSV Files</h2>
+                        <p>Import the six CSV files required by your backend.</p>
+                    </div>
+                    <span class="required-badge">6 files required</span>
+                </div>
+
+                <div class="upload-notice">
+                    <span>ⓘ</span>
+                    <p>Select the CSV files from your project's <strong>input</strong> folder.
+                    Make sure the file names match the backend requirements.</p>
+                </div>
+
+                <div class="file-grid">
+
+                    <div class="file-card">
+                        <div class="file-card-top">
+                            <div class="file-icon blue">F</div>
+                            <span class="required-label">REQUIRED</span>
+                        </div>
+                        <h3>Faculty.csv</h3>
+                        <p>Faculty details and availability information.</p>
+                        <input type="file" id="facultyFile" accept=".csv">
+                        <span id="facultyStatus" class="file-status">○ Not selected</span>
+                    </div>
+
+                    <div class="file-card">
+                        <div class="file-card-top">
+                            <div class="file-icon purple">A</div>
+                            <span class="required-label">REQUIRED</span>
+                        </div>
+                        <h3>FixedActivities.csv</h3>
+                        <p>Fixed classes and scheduled activities.</p>
+                        <input type="file" id="fixedActivitiesFile" accept=".csv">
+                        <span id="fixedActivitiesStatus" class="file-status">○ Not selected</span>
+                    </div>
+
+                    <div class="file-card">
+                        <div class="file-card-top">
+                            <div class="file-icon green">R</div>
+                            <span class="required-label">REQUIRED</span>
+                        </div>
+                        <h3>Rooms.csv</h3>
+                        <p>Classroom and laboratory information.</p>
+                        <input type="file" id="roomsFile" accept=".csv">
+                        <span id="roomsStatus" class="file-status">○ Not selected</span>
+                    </div>
+
+                    <div class="file-card">
+                        <div class="file-card-top">
+                            <div class="file-icon orange">S</div>
+                            <span class="required-label">REQUIRED</span>
+                        </div>
+                        <h3>Sections.csv</h3>
+                        <p>Student class and section information.</p>
+                        <input type="file" id="sectionsFile" accept=".csv">
+                        <span id="sectionsStatus" class="file-status">○ Not selected</span>
+                    </div>
+
+                    <div class="file-card">
+                        <div class="file-card-top">
+                            <div class="file-icon cyan">T</div>
+                            <span class="required-label">REQUIRED</span>
+                        </div>
+                        <h3>Slots.csv</h3>
+                        <p>Time slots and schedule duration.</p>
+                        <input type="file" id="slotsFile" accept=".csv">
+                        <span id="slotsStatus" class="file-status">○ Not selected</span>
+                    </div>
+
+                    <div class="file-card">
+                        <div class="file-card-top">
+                            <div class="file-icon pink">S</div>
+                            <span class="required-label">REQUIRED</span>
+                        </div>
+                        <h3>Subjects.csv</h3>
+                        <p>Subject names, codes and requirements.</p>
+                        <input type="file" id="subjectsFile" accept=".csv">
+                        <span id="subjectsStatus" class="file-status">○ Not selected</span>
+                    </div>
+
+                </div>
+
+                <div class="upload-footer">
+                    <div>
+                        <strong id="uploadProgressText">0 of 6 files selected</strong>
+                        <div class="progress-track">
+                            <div id="uploadProgress" class="progress-fill"></div>
+                        </div>
+                    </div>
+
+                    <div class="upload-buttons">
+                        <button class="secondary-btn sample-btn" id="loadSampleBtn" type="button">
+                            ⚡ Load Sample Data (1-Click)
+                        </button>
+                        <button class="secondary-btn" id="clearFilesBtn" type="button">
+                            Clear all
+                        </button>
+                        <button class="primary-btn" id="validateFilesBtn" type="button">
+                            Validate files →
+                        </button>
+                    </div>
+                </div>
+
+                <p id="uploadMessage" class="message"></p>
+                <div id="csvPreview" class="preview-card hidden"></div>
+            </section>
+
+            <!-- GENERATE -->
+            <section id="generate" class="content-page">
+                <div class="section-title">
+                    <div>
+                        <h2>Generate Timetable</h2>
+                        <p>Prepare your input data before running the generator.</p>
+                    </div>
+                </div>
+
+                <div class="generate-layout">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3>Input file checklist</h3>
+                            <span class="required-badge">6 required</span>
+                        </div>
+
+                        <div class="checklist">
+                            <p>Faculty.csv <span id="checkFaculty">Pending</span></p>
+                            <p>FixedActivities.csv <span id="checkFixedActivities">Pending</span></p>
+                            <p>Rooms.csv <span id="checkRooms">Pending</span></p>
+                            <p>Sections.csv <span id="checkSections">Pending</span></p>
+                            <p>Slots.csv <span id="checkSlots">Pending</span></p>
+                            <p>Subjects.csv <span id="checkSubjects">Pending</span></p>
+                        </div>
+
+                        <button class="primary-btn full-btn" id="generateBtn">
+                            ⚙ Generate Timetable
+                        </button>
+
+                        <p id="generateMessage" class="message"></p>
+                    </div>
+
+                    <div class="panel process-panel">
+                        <h3>Generation process</h3>
+                        <div class="process-step">
+                            <span>01</span>
+                            <div>
+                                <strong>Upload input data</strong>
+                                <p>Select all six CSV files.</p>
+                            </div>
+                        </div>
+                        <div class="process-step">
+                            <span>02</span>
+                            <div>
+                                <strong>Run C++ generator</strong>
+                                <p>Generate the timetable using scheduling logic.</p>
+                            </div>
+                        </div>
+                        <div class="process-step">
+                            <span>03</span>
+                            <div>
+                                <strong>Check conflicts</strong>
+                                <p>Use the C conflict checker.</p>
+                            </div>
+                        </div>
+                        <div class="process-step">
+                            <span>04</span>
+                            <div>
+                                <strong>View final timetable</strong>
+                                <p>Display the generated schedule.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="upload-notice" id="backendNotice">
+                    <span>ⓘ</span>
+                    <p id="backendNoticeText">The C++ Backtracking Engine &amp; C DSA Conflict Checker are connected and ready to run.</p>
+                </div>
+            </section>
+
+            <!-- VIEW TIMETABLE -->
+            <section id="timetable" class="content-page">
+                <div class="section-title">
+                    <div>
+                        <h2>Generated Timetable</h2>
+                        <p>Your clash-free college schedule rendered by the C++ timetable formatter.</p>
+                    </div>
+                </div>
+
+                <div id="timetableOutput" class="output-area">
+                    <div id="timetableEmptyState" class="empty-state">
+                        <div class="empty-illustration">▦</div>
+                        <h3>No timetable generated yet</h3>
+                        <p>Upload the six CSV files and click "Generate Timetable" to produce the schedule.</p>
+                        <button class="primary-btn" data-open-page="upload">
+                            Upload CSV files →
+                        </button>
+                    </div>
+
+                    <div id="timetableDisplayArea" class="hidden">
+                        <div class="timetable-toolbar">
+                            <div class="toolbar-left">
+                                <label for="sectionSelect"><strong>Select Section:</strong></label>
+                                <select id="sectionSelect" class="form-select"></select>
+                                <span class="badge-sessions" id="sectionSessionCount">Sessions: 50</span>
+                            </div>
+                            <div class="toolbar-right">
+                                <button class="secondary-btn" id="printTimetableBtn" type="button">🖨 Print / Save as PDF</button>
+                                <button class="secondary-btn" id="openNewTabBtn" type="button">⧉ Open Fullscreen</button>
+                                <button class="primary-btn" id="downloadCsvBtn" type="button">⬇ Download CSV</button>
+                            </div>
+                        </div>
+                        <div class="timetable-frame-card">
+                            <iframe id="timetableFrame" title="Timetable Viewer" src="about:blank"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONFLICT REPORT -->
+            <section id="conflicts" class="content-page">
+                <div class="section-title">
+                    <div>
+                        <h2>Conflict Report</h2>
+                        <p>Graph-theoretic conflict checking by the C DSA checker (conflict_check.c).</p>
+                    </div>
+                </div>
+
+                <div id="conflictOutput" class="output-area">
+                    <div id="conflictEmptyState" class="empty-state">
+                        <div class="empty-illustration warning-icon">!</div>
+                        <h3>No conflict report available</h3>
+                        <p>Generate a timetable to run the C graph conflict checker and view clash verification here.</p>
+                    </div>
+
+                    <div id="conflictDisplayArea" class="hidden">
+                        <div class="conflict-stats-grid">
+                            <div class="conflict-stat-card">
+                                <span class="conflict-stat-lbl">Total Sessions</span>
+                                <h3 id="statTotalSessions" class="stat-number">50</h3>
+                                <p>Scheduled classes</p>
+                            </div>
+                            <div class="conflict-stat-card">
+                                <span class="conflict-stat-lbl">Conflicting Pairs</span>
+                                <h3 id="statEdgeCount" class="stat-number">0</h3>
+                                <p>Graph edges detected</p>
+                            </div>
+                            <div class="conflict-stat-card">
+                                <span class="conflict-stat-lbl">Conflict Clashes</span>
+                                <h3 id="statClashCount" class="stat-number" style="color:var(--green)">0 Clashes</h3>
+                                <p>Faculty, room, section</p>
+                            </div>
+                            <div class="conflict-stat-card">
+                                <span class="conflict-stat-lbl">Validation Result</span>
+                                <h3 id="statValidationStatus" class="stat-number" style="color:var(--green)">PASSED</h3>
+                                <p>C DSA Graph Validation</p>
+                            </div>
+                        </div>
+
+                        <div class="terminal-card">
+                            <div class="terminal-header">
+                                <div class="terminal-title">
+                                    <span class="terminal-dot red"></span>
+                                    <span class="terminal-dot yellow"></span>
+                                    <span class="terminal-dot green"></span>
+                                    <span>C DSA Conflict Graph &amp; Degree Report</span>
+                                </div>
+                                <button class="terminal-copy-btn" id="copyConflictBtn" type="button">Copy Log</button>
+                            </div>
+                            <pre id="conflictTerminal" class="terminal-body"></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SETTINGS -->
+            <section id="settings" class="content-page">
+                <div class="section-title">
+                    <div>
+                        <h2>Settings</h2>
+                        <p>Administrator and project information.</p>
+                    </div>
+                </div>
+
+                <div class="panel settings-panel">
+                    <h3>Administrator profile</h3>
+                    <div class="setting-row">
+                        <span>Full name</span>
+                        <strong id="settingsName">Administrator</strong>
+                    </div>
+                    <div class="setting-row">
+                        <span>Email</span>
+                        <strong id="settingsEmail">admin@gmail.com</strong>
+                    </div>
+                </div>
+
+                <div class="panel settings-panel">
+                    <h3>Project technology</h3>
+                    <div class="setting-row">
+                        <span>Frontend</span>
+                        <strong>HTML, CSS, JavaScript</strong>
+                    </div>
+                    <div class="setting-row">
+                        <span>Timetable generator</span>
+                        <strong>C++ (OOP)</strong>
+                    </div>
+                    <div class="setting-row">
+                        <span>Conflict checker</span>
+                        <strong>C (DSA)</strong>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="footer">
+                Student Schedule Planner · College Timetable Management System
+            </footer>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
